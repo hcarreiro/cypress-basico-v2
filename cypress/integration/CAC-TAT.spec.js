@@ -54,6 +54,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     it('Exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function() {
         
+        const longText = Cypress._.repeat('da de di do du ', 15);
+
         // congela o relógio do navegador
         cy.clock();
 
@@ -61,7 +63,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#firstName').type('Hildefonso');
         cy.get('#lastName').type('Carreiro');
         cy.get('#email').type('hildefonso@gmail'); // email com formatação inválida
-        cy.get('#open-text-area').type("Parabéns pelo treinamento!");
+        // Uso do invoke pra simular um Ctrl + V no campo
+        cy.get('#open-text-area').type('Parabéns pelo conteúdo');
         
         // pegar um seletor por type
         // clicar no botão enviar
@@ -269,5 +272,66 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // valida se o título da página é o texto informado
         cy.get('#title').should('have.text', 'CAC TAT - Política de privacidade');
     });
+
+    it('Exibe e esconde as mensagens de sucesso e erro usando o .invoke()', function() {
+        // Dou um get no elemento da msg de sucesso
+        cy.get('.success')
+            // Validar se ela não está visível
+            .should('not.be.visible')
+            // Invocar e tornar ela visível
+            .invoke('show')
+            // Validar se ela está visível
+            .should('be.visible')
+            // Validar se ela contém o texto informado
+            .and('contain', 'Mensagem enviada com sucesso.')
+            // Invocar e tornar ela não visível
+            .invoke('hide')
+            // Validar se não está mais visível
+            .should('not.be.visible')
+        
+        // Dou um get no elemento da msg de erro
+        cy.get('.error')
+            // Validar se ela não está visível
+            .should('not.be.visible')
+            // Invocar e tornar ela visível
+            .invoke('show')
+            // Validar se ela está visível
+            .should('be.visible')
+            // Validar se ela contém o texto informado
+            .and('contain', 'Valide os campos obrigatórios!')
+            // Invocar e tornar ela não visível
+            .invoke('hide')
+            // Validar se não está mais visível
+            .should('not.be.visible')
+    });
     
+    it('Preenche a area de texto usando o comando invoke', function() {
+        
+        const longText = Cypress._.repeat('da de di do du ', 15);
+
+        // congela o relógio do navegador
+        cy.clock();
+
+        //preenchimento formulário
+        cy.get('#firstName').type('Hildefonso');
+        cy.get('#lastName').type('Carreiro');
+        cy.get('#email').type('hildefonso@gmail'); // email com formatação inválida
+        // Uso do invoke pra simular um Ctrl + V no campo
+        cy.get('#open-text-area').invoke('val', longText).should('have.value', longText);
+        
+        // pegar um seletor por type
+        // clicar no botão enviar
+        cy.get('button[type="submit"]').click();
+
+        // validar se a mensagem de erro para e-mail inválido está visível
+        cy.get('.error').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem de erro para e-mail inválido desapareceu após 3 seg
+        cy.get('.error').should('not.be.visible');
+
+    });
+
 });
