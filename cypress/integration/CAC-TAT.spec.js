@@ -135,4 +135,33 @@ describe('Central de Atendimento ao Cliente TAT', function() {
                 cy.wrap($radio).should('be.checked');
             });
     });
+
+    it('Marca ambos checkboxes, depois desmarca o último', function() {
+        
+        // usamos esse seletor para pegar todos os checkbox
+        cy.get('input[type="checkbox"]')
+            // damos um check em todos os checkbox
+            .check()
+            // pegamos o último checkbox encontrado
+            .last()
+            // realizamos um uncheck neste último checkbox encontrado
+            .uncheck();
+    });
+
+    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
+  
+        //preenchimento formulário
+        cy.get('#firstName').type('Hildefonso');
+        cy.get('#lastName').type('Carreiro');
+        cy.get('#email').type('hildefonso@gmail.com');
+        cy.get('#phone-checkbox').check();
+        cy.get('#open-text-area').type("Parabéns pelo treinamento!");
+
+        // pegar um seletor por type
+        // clicar no botão enviar
+        cy.get('button[type="submit"]').click();
+
+        // validar se a mensagem de erro par e-mail inválido está visível
+        cy.get('.error').should('be.visible');        
+    })
 })
