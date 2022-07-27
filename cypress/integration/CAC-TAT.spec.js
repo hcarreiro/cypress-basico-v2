@@ -29,7 +29,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         
         // pegar um seletor por type
         // clicar no botão enviar
-        cy.get('button[type="submit"]').click();
+        //cy.get('button[type="submit"]').click();
+        cy.contains('button', 'Enviar').click(); // usar o cy.contains pra buscar o texto do botão para identificar
 
         // validar se a mensagem de sucesso está visível
         cy.get('.success').should('be.visible');
@@ -51,7 +52,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.error').should('be.visible');
     });
 
-    it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
+    it('Exibe mensagem de erro quando o telefone aceitar caracteres não numericos', function() {
         
         // enviando texto inválido para o campo e validando se continua vazio
         cy.get('#phone').type('abc!@#_=-/').should('have.text', '');
@@ -93,7 +94,10 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.error').should('be.visible');
     })
 
-    it.only('Envia o formuário com sucesso usando um comando customizado', function() {
-
+    it('Envia o formuário com sucesso usando um comando customizado', function() {
+        // comando personalizado em support/commands.js
+        cy.fillMandatoryFieldsAndSubmit();
     })
+
+
 })
