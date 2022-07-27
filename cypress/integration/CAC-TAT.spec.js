@@ -216,4 +216,5 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // valida se o título da página é o texto informado
         cy.get('#title').should('have.text', 'CAC TAT - Política de privacidade');
     });
+    
 });
