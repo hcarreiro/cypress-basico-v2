@@ -16,36 +16,41 @@ describe('Central de Atendimento ao Cliente TAT', function() {
           .should('be.equal', 'Central de Atendimento ao Cliente TAT');
     });
 
-    // caso de teste
-    it('Preenche os campos obrigatórios e envia o formulário', function() {
+    // Uso da biblioteca lodash para repedição de testes
+    Cypress._.times(5, function() {
 
-        const longText = 'No objeto de options que podemos passar ao comando .type(), é possível sobrescrever o delay padrão por outro valor (em milissegundos). Quando o valor 0 é passado, a digitação no campo acontece quase que de forma imediata. Portanto, experimente digitar um texto longo na área de texto, passando como segundo argumento do comando .type(), um objeto ({}) com a propriedade delay com valor 0.';
-
-        // congela o relógio do navegador
-        cy.clock();
-
-        //preenchimento formulário
-        cy.get('#firstName').type('Hildefonso');
-        cy.get('#lastName').type('Carreiro');
-        cy.get('#email').type('hildefonso@gmail.com');
-
-        // utilizando o {delay: 0} o cypress realiza o processo de escrita muito mais rápido que o default
-        cy.get('#open-text-area').type(longText, { delay: 0 });
-        
-        // pegar um seletor por type
-        // clicar no botão enviar
-        //cy.get('button[type="submit"]').click();
-        cy.contains('button', 'Enviar').click(); // usar o cy.contains pra buscar o texto do botão para identificar
-
-        // validar se a mensagem de sucesso está visível
-        cy.get('.success').should('be.visible');
-
-        // avança o relógio em 3 segundos
-        cy.tick(THREE_SECONDS_IN_MS);
-
-        // validar se a mensagem desapareceu
-        cy.get('.success').should('not.be.visible');
-    });
+        // caso de teste
+        it.only('Preenche os campos obrigatórios e envia o formulário', function() {
+    
+            // Uso da biblioteca lodash com cypress pra repetição de strings
+            const longText = Cypress._.repeat("bla ble bli blo blu ", 15);
+    
+            // congela o relógio do navegador
+            cy.clock();
+    
+            //preenchimento formulário
+            cy.get('#firstName').type('Hildefonso');
+            cy.get('#lastName').type('Carreiro');
+            cy.get('#email').type('hildefonso@gmail.com');
+    
+            // utilizando o {delay: 0} o cypress realiza o processo de escrita muito mais rápido que o default
+            cy.get('#open-text-area').type(longText, { delay: 0 });
+            
+            // pegar um seletor por type
+            // clicar no botão enviar
+            //cy.get('button[type="submit"]').click();
+            cy.contains('button', 'Enviar').click(); // usar o cy.contains pra buscar o texto do botão para identificar
+    
+            // validar se a mensagem de sucesso está visível
+            cy.get('.success').should('be.visible');
+    
+            // avança o relógio em 3 segundos
+            cy.tick(THREE_SECONDS_IN_MS);
+    
+            // validar se a mensagem desapareceu
+            cy.get('.success').should('not.be.visible');
+        });
+    })
 
     it('Exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function() {
         
