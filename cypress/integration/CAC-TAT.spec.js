@@ -200,4 +200,20 @@ describe('Central de Atendimento ao Cliente TAT', function() {
                 expect($input[0].files[0].name).to.equal('example.json');
             });
     });
-})
+
+    it('Verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function() {
+        // validamos que o link possui o atributo target blank que envia para outra aba
+        cy.get('a').should('have.attr', 'target', '_blank');
+    });
+
+    it('Acessa a página da política de privacidade removendo o target e então clicanco no link', function() {
+        // removemos o atributo target, assim não abrimos em outra aba mas na mesma mesmo, funciona quando é no mesmo domínio o link
+        cy.get('a')
+            .invoke('removeAttr', 'target')
+            .click();
+        // valida se contém esse texto informado na página
+        cy.contains('CAC TAT - Política de privacidade').should('be.visible');
+        // valida se o título da página é o texto informado
+        cy.get('#title').should('have.text', 'CAC TAT - Política de privacidade');
+    });
+});
