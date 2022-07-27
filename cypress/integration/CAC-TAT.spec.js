@@ -20,7 +20,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     Cypress._.times(5, function() {
 
         // caso de teste
-        it.only('Preenche os campos obrigatórios e envia o formulário', function() {
+        it('Preenche os campos obrigatórios e envia o formulário', function() {
     
             // Uso da biblioteca lodash com cypress pra repetição de strings
             const longText = Cypress._.repeat("bla ble bli blo blu ", 15);
