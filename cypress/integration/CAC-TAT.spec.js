@@ -148,7 +148,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
             .uncheck();
     });
 
-    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
+    it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
   
         //preenchimento formulário
         cy.get('#firstName').type('Hildefonso');
@@ -164,4 +164,40 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // validar se a mensagem de erro par e-mail inválido está visível
         cy.get('.error').should('be.visible');        
     })
+
+    it('Seleciona um arquivo da pasta fixtures', function() {
+
+        // damos um get no elemento de file upload
+        cy.get('#file-upload')
+            // verificamos que não há arquivo importado
+            .should('not.have.value')
+            // enviamos um select file com o caminho do arquivo
+            .selectFile('./cypress/fixtures/example.json')
+            // chamamos o should passando uma função de callback
+            .should(function($input) {
+                // validamos que o arquivo do índice 0 é o que foi importado
+                expect($input[0].files[0].name).to.equal('example.json');
+            });
+    });
+
+    it('Seleciona um arquivo simulando um drag-and-drop', function() {
+        cy.get('input[type="file"]')
+            .should('not.have.value')
+            // passando o parâmetro {action: "drag-drop"} o cypress simula um drat and drop
+            .selectFile('./cypress/fixtures/example.json', {action: "drag-drop"})
+            .should(function($input) {
+                expect($input[0].files[0].name).to.equal('example.json');
+            });    
+    });
+
+    it('Seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', function() {
+        // criado um alias para meu arquivo contido em fixture
+        cy.fixture('example.json').as('sampleFile');
+
+        cy.get('input[type="file"]')
+            .selectFile('@sampleFile')
+            .should(function($input) {
+                expect($input[0].files[0].name).to.equal('example.json');
+            });
+    });
 })
