@@ -334,4 +334,22 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     });
 
+    it('Faz uma requisição HTTP', function() {
+
+        // realização de uma request
+        cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+            // enviamos um "deveria" com uma função de callback contendo o reponse
+            .should(function(response){
+                // com a resposta da requisão desestruturamos o response
+                const { status, statusText, body } = response
+                // validamos se o status é 200
+                expect(status).to.equal(200)
+                // validamos se o texto do status é OK
+                expect(statusText).to.equal('OK')
+                // validamos se está incluso no body o texto 'CAC TAT'
+                expect(body).to.include('CAC TAT')
+            })
+
+        
+    })
 });
