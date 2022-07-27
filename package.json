@@ -20,9 +20,9 @@
     "Cypress Básico",
     "Escola TAT"
   ],
-  "author": "Walmyr Filho <wlsf82@gmail.com> (https://walmyr.dev/)",
+  "author": "Hildefonso Carreiro <hildefonsocarreiro@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/wlsf82/cypress-basico-v2#readme",
+  "homepage": "https://github.com/hcarreiro/cypress-basico-v2",
   "devDependencies": {
     "cypress": "^9.5.1"
   }
