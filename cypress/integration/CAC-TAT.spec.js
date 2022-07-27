@@ -3,6 +3,8 @@
 // suíte de teste
 describe('Central de Atendimento ao Cliente TAT', function() {
 
+    const THREE_SECONDS_IN_MS = 3000;
+
     // para execução antes de cada caso de teste (cada it)
     beforeEach( function() {
         cy.visit('./src/index.html');
@@ -19,6 +21,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         const longText = 'No objeto de options que podemos passar ao comando .type(), é possível sobrescrever o delay padrão por outro valor (em milissegundos). Quando o valor 0 é passado, a digitação no campo acontece quase que de forma imediata. Portanto, experimente digitar um texto longo na área de texto, passando como segundo argumento do comando .type(), um objeto ({}) com a propriedade delay com valor 0.';
 
+        // congela o relógio do navegador
+        cy.clock();
+
         //preenchimento formulário
         cy.get('#firstName').type('Hildefonso');
         cy.get('#lastName').type('Carreiro');
@@ -34,10 +39,19 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         // validar se a mensagem de sucesso está visível
         cy.get('.success').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem desapareceu
+        cy.get('.success').should('not.be.visible');
     });
 
     it('Exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function() {
         
+        // congela o relógio do navegador
+        cy.clock();
+
         //preenchimento formulário
         cy.get('#firstName').type('Hildefonso');
         cy.get('#lastName').type('Carreiro');
@@ -48,8 +62,15 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // clicar no botão enviar
         cy.get('button[type="submit"]').click();
 
-        // validar se a mensagem de erro par e-mail inválido está visível
+        // validar se a mensagem de erro para e-mail inválido está visível
         cy.get('.error').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem de erro para e-mail inválido desapareceu após 3 seg
+        cy.get('.error').should('not.be.visible');
+
     });
 
     it('Exibe mensagem de erro quando o telefone aceitar caracteres não numericos', function() {
@@ -59,6 +80,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     });
 
     it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
+
+        // congela o relógio do navegador
+        cy.clock();
 
         //preenchimento formulário
         cy.get('#firstName').type('Hildefonso');
@@ -71,8 +95,14 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // clicar no botão enviar
         cy.get('button[type="submit"]').click();
 
-        // validar se a mensagem de erro par e-mail inválido está visível
+        // validar se a mensagem de erro para e-mail inválido está visível
         cy.get('.error').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem de erro para e-mail inválido desapareceu após 3 seg
+        cy.get('.error').should('not.be.visible');
     });
 
     it('Preenche e limpa os campos nome, sobrenome, email e telefone', function() {
@@ -86,12 +116,21 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     it('Exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios', function() {
         
+        // congela o relógio do navegador
+        cy.clock();
+
         // pegar um seletor por type
         // clicar no botão enviar
         cy.get('button[type="submit"]').click();
 
-        // validar se a mensagem de erro par e-mail inválido está visível
+        // validar se a mensagem de erro para e-mail inválido está visível
         cy.get('.error').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem de erro para e-mail inválido desapareceu após 3 seg
+        cy.get('.error').should('not.be.visible');
     })
 
     it('Envia o formuário com sucesso usando um comando customizado', function() {
@@ -150,6 +189,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     it('Exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', function() {
   
+        // congela o relógio do navegador
+        cy.clock();
+
         //preenchimento formulário
         cy.get('#firstName').type('Hildefonso');
         cy.get('#lastName').type('Carreiro');
@@ -161,8 +203,14 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         // clicar no botão enviar
         cy.get('button[type="submit"]').click();
 
-        // validar se a mensagem de erro par e-mail inválido está visível
-        cy.get('.error').should('be.visible');        
+        // validar se a mensagem de erro para e-mail inválido está visível
+        cy.get('.error').should('be.visible');
+
+        // avança o relógio em 3 segundos
+        cy.tick(THREE_SECONDS_IN_MS);
+
+        // validar se a mensagem de erro para e-mail inválido desapareceu após 3 seg
+        cy.get('.error').should('not.be.visible');
     })
 
     it('Seleciona um arquivo da pasta fixtures', function() {
