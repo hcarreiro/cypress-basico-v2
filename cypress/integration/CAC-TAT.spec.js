@@ -348,8 +348,22 @@ describe('Central de Atendimento ao Cliente TAT', function() {
                 expect(statusText).to.equal('OK')
                 // validamos se está incluso no body o texto 'CAC TAT'
                 expect(body).to.include('CAC TAT')
-            })
+            });
+    });
 
+    it('Desafio (encontre o gato)', function() {
+
+        // dar um get via id no elemento
+        cy.get('#cat')
+            // invocar o show pra exibir o elemento
+            .invoke('show')
+            // validar se o mesmo está visível
+            .should('be.visible');
         
-    })
+        // dar um get no elemento title
+        cy.get('#title')
+            // usar o invoke pra alterar o texto do title
+            .invoke('text', 'CAT TAT ;-)')
+    });
+
 });
